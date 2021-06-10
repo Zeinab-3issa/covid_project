@@ -33,4 +33,4 @@ termcolor
 #image tools
 opencv-python #cv2
 pydicom
-os
+
