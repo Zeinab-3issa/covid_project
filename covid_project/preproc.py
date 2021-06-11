@@ -29,7 +29,7 @@ def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_si
         dcm_file = tf.io.read_file(file_path)
         img = tfio.image.decode_dicom_image(dcm_file)
         img = tf.image.resize_with_pad(img, target_height, target_width
-        if to_rgb = True:
+        if to_rgb == True:
             img = tf.image.grayscale_to_rgb(img)
         img = tf.squeeze(img, axis=0)
         return img, label
