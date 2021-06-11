@@ -1,6 +1,7 @@
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 import tensorflow_io as tfio
+from tensorflow.keras.applications.vgg16 import preprocess_input
 #from tensorflow.keras import Sequential, layers, models, optimizers
 #from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.keras.layers.experimental.preprocessing import Rescaling
@@ -20,7 +21,7 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 #TARGET_HEIGHT = 128  #à définir (hauteur de l'image redimensionnée)
 #TARGET_WIDTH = 128  #à définir (largeur de l'image redimensionnée)
 
-def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_size=32, to_rgb=False):
+def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_size=32, to_rgb=False, to_vgg=False):
 
     def extract_img(file_path,
                     label):
@@ -29,6 +30,8 @@ def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_si
         img = tf.image.resize_with_pad(img, target_height, target_width)
         if to_rgb == True:
             img = tf.image.grayscale_to_rgb(img)
+            if to_vgg == True:
+                img = preprocess_input(img)
         img = tf.squeeze(img, axis=0)
         return img, label
 
