@@ -15,10 +15,10 @@ def train_val_test_split(X, y):
 
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-BATCH_SIZE = 32  # à définir (32)
-BUFFER_SIZE = 32  # à définir (len(file_path))
-TARGET_HEIGHT = 128  #à définir (hauteur de l'image redimensionnée)
-TARGET_WIDTH = 128  #à définir (largeur de l'image redimensionnée)
+#BATCH_SIZE = 32  # à définir (32)
+#BUFFER_SIZE = 32  # à définir (len(file_path))
+#TARGET_HEIGHT = 128  #à définir (hauteur de l'image redimensionnée)
+#TARGET_WIDTH = 128  #à définir (largeur de l'image redimensionnée)
 
 
 def extract_img(file_path,
