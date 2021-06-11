@@ -20,26 +20,17 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 #TARGET_HEIGHT = 128  #à définir (hauteur de l'image redimensionnée)
 #TARGET_WIDTH = 128  #à définir (largeur de l'image redimensionnée)
 
-#def extract_img(file_path,
-#                label,
-#                target_height,
-#                target_width):
-#    dcm_file = tf.io.read_file(file_path)
-#    img = tfio.image.decode_dicom_image(dcm_file)
-#    img = tf.image.resize_with_pad(img, target_height, target_width)
-#    img = tf.squeeze(img, axis=0)
-#    return img, label
-
-
-def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_size=32):
+def prepare_ds(ds, target_height=128, target_width=128, buffer_size=32, batch_size=32, to_rgb=False):
 
     def extract_img(file_path,
-                    label,
-                    target_height=target_height,
-                    target_width=target_width):
+                    label):
+                    #target_height=target_height,
+                    #target_width=target_width):
         dcm_file = tf.io.read_file(file_path)
         img = tfio.image.decode_dicom_image(dcm_file)
-        img = tf.image.resize_with_pad(img, target_height, target_width)
+        img = tf.image.resize_with_pad(img, target_height, target_width
+        if to_rgb = True:
+            img = tf.image.grayscale_to_rgb(img)
         img = tf.squeeze(img, axis=0)
         return img, label
 
