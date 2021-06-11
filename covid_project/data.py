@@ -62,7 +62,7 @@ def images_path_df(image_path):
 def get_tensorflow_ready(dataframe1, dataframe2):
     tensorflow_df = dataframe1.merge(dataframe2, on='image_id',
                                          how='inner').set_index('image_id')
-    file_paths = tensorflow_df["images path"].values
+    file_paths = tensorflow_df["images_path"].values
     labels = tensorflow_df[[
     'Negative for Pneumonia', 'Typical Appearance', 'Indeterminate Appearance',
     'Atypical Appearance']].values
