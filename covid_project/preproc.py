@@ -22,8 +22,8 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 def extract_img(file_path,
                 label,
-                target_height=128,
-                target_width=128):
+                target_height,
+                target_width):
     dcm_file = tf.io.read_file(file_path)
     img = tfio.image.decode_dicom_image(dcm_file)
     img = tf.image.resize_with_pad(img, target_height, target_width)
@@ -31,8 +31,7 @@ def extract_img(file_path,
     return img, label
 
 
-def prepare_ds(ds, target_height=128,
-                target_width=128, buffer_size=32, batch_size=32):
+def prepare_ds(ds, target_height, target_width, buffer_size=32, batch_size=32):
     ds = ds.map(extract_img(target_height, target_width),
                 num_parallel_calls=AUTOTUNE)
     ds = ds.cache()
