@@ -45,17 +45,19 @@ def csv_simple_df(path):
     return simple_df
 
 
-def images_path_df(image_path):
+def images_path_df(image_path, image_id=True):
     images_list = os.listdir(image_path)
     images_path=[]
     images_id_list =[]
     for i in images_list:
         path = (image_path + "/" + i)
         images_path.append(path)
-        element = i.replace(".dcm", "")
-        images_id_list.append(element)
+        if image_id == True:
+            element = i.replace(".dcm", "")
+            images_id_list.append(element)
     images_path_df = pd.DataFrame(images_path, columns=['images_path'])
-    images_path_df['image_id'] = images_id_list
+    if image_id == True:
+        images_path_df['image_id'] = images_id_list
     return images_path_df
 
 
