@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 import tensorflow_io as tfio
-from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.applications.vgg19 import preprocess_input
 #from tensorflow.keras import Sequential, layers, models, optimizers
 #from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.keras.layers.experimental.preprocessing import Rescaling
