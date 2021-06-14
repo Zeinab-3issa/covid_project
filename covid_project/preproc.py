@@ -62,10 +62,10 @@ def prepare_ds(ds, target_height=128, target_width=128,
     #ds = create_tensor(X,y)
     ds = ds.map(extract_img,
                 num_parallel_calls=AUTOTUNE)
+    ds = ds.cache()
     if data_augmentation == True:
         ds = ds.map(augment_img,
                 num_parallel_calls=AUTOTUNE)
-    ds = ds.cache()
     ds = ds.shuffle(buffer_size)
     ds = ds.batch(batch_size, num_parallel_calls=AUTOTUNE)
     ds = ds.prefetch(AUTOTUNE)
