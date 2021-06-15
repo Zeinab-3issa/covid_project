@@ -23,49 +23,51 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 #TARGET_HEIGHT = 128  #à définir (hauteur de l'image redimensionnée)
 #TARGET_WIDTH = 128  #à définir (largeur de l'image redimensionnée)
 
-def prepare_ds(ds, target_height=128, target_width=128,
+def prepare_ds(ds, with_labels=True, target_height=128, target_width=128,
                buffer_size=32, batch_size=32,
                data_augmentation=False, transform_parameters=None,
                to_rgb=False, to_vgg=False, to_efnet=False):
-    
+
     #def create_tensor(X, y=y):
     #    ds = tf.data.Dataset.from_tensor_slices((X, y))
     #    return ds
 
-    def extract_img(file_path, label):
+    def extract_img(file_path, label=None):
         dcm_file = tf.io.read_file(file_path)
         img = tfio.image.decode_dicom_image(dcm_file)
         img = tf.image.resize_with_pad(img, target_height, target_width)
         if to_rgb == True:
-                img = tf.image.grayscale_to_rgb(img)
-                if to_vgg == True:
-                    img = vgg19_preprocess_input(img)
-                if to_efnet == True :
-                    img = efnet_preprocess_input(img)
+            img = tf.image.grayscale_to_rgb(img)
+            if to_vgg == True:
+                img = vgg19_preprocess_input(img)
+            if to_efnet == True :
+                img = efnet_preprocess_input(img)
         img = tf.squeeze(img, axis=0)
-        if label == None:
-            return img
-        else:
-            return img, label
+
+        return img, label if with_labels else img
 
     def augment_img(img,label):
-            datagen = ImageDataGenerator()
-            new_img = datagen.apply_transform(img, transform_parameters)
-            #images = [img]
-            #labels = [label]
-            #for params in transform_parameters:
-            #    new_img = datagen.apply_transform(img, params)
-            #    images.append(new_img)
-            #    labels.append(label)
-            return new_img, label
+        datagen = ImageDataGenerator()
+        new_img = datagen.apply_transform(img, transform_parameters)
+        #images = [img]
+        #labels = [label]
+        #for params in transform_parameters:
+        #    new_img = datagen.apply_transform(img, params)
+        #    images.append(new_img)
+        #    labels.append(label)
+        return new_img, label
+
+    def build_augmenter(img,label=None,with_labels=True):
+        img = tf.image.random_flip_left_right(img)
+        img = tf.image.random_flip_up_down(img)
+        return img, label if with_labels else img
 
     #ds = create_tensor(X,y)
     ds = ds.map(extract_img,
                 num_parallel_calls=AUTOTUNE)
     ds = ds.cache()
     if data_augmentation == True:
-        ds = ds.map(augment_img,
-                num_parallel_calls=AUTOTUNE)
+        ds = ds.map(build_augmenter, num_parallel_calls=AUTOTUNE)
     ds = ds.shuffle(buffer_size)
     ds = ds.batch(batch_size, num_parallel_calls=AUTOTUNE)
     ds = ds.prefetch(AUTOTUNE)
