@@ -1,7 +1,7 @@
 FROM python:3.8.6-buster
 
 
-COPY TaxiFareModel /TaxiFareModel
+COPY covid_project /covid_project
 COPY api /api
 COPY requirements.txt /requirements.txt
 
