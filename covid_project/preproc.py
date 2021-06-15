@@ -32,7 +32,7 @@ def prepare_ds(ds, with_labels=True, target_height=128, target_width=128,
     #    ds = tf.data.Dataset.from_tensor_slices((X, y))
     #    return ds
 
-    def extract_img(file_path, label):
+    def extract_img(file_path, label=None):
         dcm_file = tf.io.read_file(file_path)
         img = tfio.image.decode_dicom_image(dcm_file)
         img = tf.image.resize_with_pad(img, target_height, target_width)
@@ -57,7 +57,7 @@ def prepare_ds(ds, with_labels=True, target_height=128, target_width=128,
         #    labels.append(label)
         return new_img, label
 
-    def build_augmenter(with_labels=True):
+    def build_augmenter(img,label=None,with_labels=True):
         def augment(img):
             img = tf.image.random_flip_left_right(img)
             img = tf.image.random_flip_up_down(img)
